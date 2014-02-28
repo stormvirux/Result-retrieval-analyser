@@ -1,72 +1,61 @@
-def marks():
-	fl = open('output.csv', 'rb')
-	string=fl.read()
-	fl.close
-	str1=re.sub(r"Semester:,.*,Result:  [FS].* CLASS(,|.*,)","",string)
-	str2=re.sub(r"P,","",str1)
-	usn=re.findall(r"4pa\d\dcs\d\d\d",string)
-	u=usn[0]
-	string=re.sub(r"\(4pa\d\d(cs|ec|me|te|bt|is)\d\d\d\)","",str2)
-	str2=re.sub(r"[a-zA-Z&]*","",string)
-	string=re.sub(r",,","",str2)
-	str2=re.sub(r"\(\d\d\d\d\),","",string)
-	string=re.sub(r"  ","",str2)
-	str2=re.sub(r" :,","",string)
-	fl = open('out.csv', 'ab')
-	string=re.sub(r" . ","",str2)
-	marks=re.sub(r"-","",string)
-	m=re.sub(r":,\d,:","",marks)
-	marks=re.sub(r"(^,|,$)","",m)
-	fl.write(u+",")
-	fl.write(marks)
-	fl.close
-
-def sub():
-	fl = open('output.csv', 'rb')
-	string=fl.read()
-	fl.close
-	str1=re.sub(r"Semester:,5,Result:  [FS].* CLASS,","",string)
-	str2=re.sub(r"P,","",str1)
-	string=re.sub(r"\(4pa\d\d(cs|ec|me|te|bt|is)\d\d\d\)","",str2)
-	str2=re.sub(r"[0-9]*","",string) #remove all numbers
-	string=re.sub(r"^[A-Z]* [A-Z]* ,","",str2)
-	str2=re.sub(r",,","",string)
-	string=re.sub(r"\([A-Z]*\)",",",str2)
-	usn=re.findall(r"4pa\d\dcs\d\d\d",string)
-	str2=re.sub(r":","",string)
-	string=re.sub(r"Total Marks,","",str2)
-	fl = open('out.csv', 'wb')
-	marks=re.sub(r"-","",string)
-	string=re.sub(r"Subject,External,Internal,Total,Result,","",marks)
-	string = string.split(',')
-	print string
-	stri = ''
-	for each in range(1,len(string)):
-			stri += 'External,Internal,Total' + ','
-	stri= stri.strip(',')
-	fl.write("usn,")
-	fl.write(stri)
-	fl.write(",Main Total")
-	fl.write("\n")
-	fl.close
-
-def getincsv():
-	sub()
-	marks()
-
-
-def getval():
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+#
+#  untitled.py
+#  
+#  Copyright 2014 Thaha Muhammed <storm@storm-lappy>
+#  
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+#  
+# 
+def inputIndex():
 	import codecs
 	x=0
-	records=[]
-	all_tds=[]
+	fl = codecs.open('output.csv', 'wb',encoding="Utf-8")
+	fl.write("usn,")
+	while x<8:
+		fl.write("External,Internal,Total,")
+		x+=1
+	fl.write("Main Total\n")
+	fl.close()
+
+def getval():
+	from bs4 import BeautifulSoup
+	import codecs
+	lol=[]
+	record=[]
 	page_html=open('output.html')
 	soup=BeautifulSoup(page_html)
 	soup.prettify()
-	fl = codecs.open('output.csv', 'wb',encoding="Utf-8")
-	for string in soup.stripped_strings:
-		fl.write(string)
+	fl = codecs.open('output.csv', 'ab',encoding="Utf-8")
+	record=[texts.text for texts in soup.findAll("td",{"align":"center"})]
+	for x in soup.findAll("td"):
+		if x.parent.name=="tr":
+			lol=x.text
+	for x in record:
+		if "P" in x: record.remove("P")
+		elif "F" in x: record.remove("F")
+		elif "A" in x: record.remove("A")
+	del record[0:4]
+	print record
+	fl.write(usn)
+	for x in record:
+		fl.write(x)
 		fl.write(",")
+	fl.write(lol)
 	fl.close()
 	
 def parsehtml():
@@ -79,8 +68,7 @@ def parsehtml():
 	record = '%s' % (lol)
 	fl.write(record)
 	fl.close()
-	
-	
+		
 def ret():
 	import requests
 	print "enter the year:"
@@ -93,16 +81,16 @@ def ret():
 	payload={'rid':usn,'submit':'submit'}
 	r=requests.post("http://results.vtu.ac.in/vitavi.php/post",data=payload)
 
-
 def main():
 	ret()
 	parsehtml()
 	getval()
-	getincsv()
 	return 0
 
 if __name__ == '__main__':
+	usn=""
 	from bs4 import BeautifulSoup
 	import re
+	inputIndex()
 	main()
 
