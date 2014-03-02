@@ -71,13 +71,12 @@ def parsehtml():
 		
 def ret():
 	import requests
+	branches=["cs","ec","me","is","bt","te"]
 	print "enter the year:"
 	year=raw_input()
-	print "enter the role number:"
-	rno=raw_input()
-	print "enter the branch"
-	br=raw_input()
-	usn="4pa"+year+br+rno
+	for branch in branches:
+		for rno in range(1,120):
+			usn="4pa"+year+branch+"%3d"%rno
 	payload={'rid':usn,'submit':'submit'}
 	r=requests.post("http://results.vtu.ac.in/vitavi.php/post",data=payload)
 
