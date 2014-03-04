@@ -37,27 +37,29 @@ def getval():
 	import codecs
 	lol=[]
 	record=[]
-	page_html=open('output.html')
-	soup=BeautifulSoup(page_html)
-	soup.prettify()
-	fl = codecs.open('output.csv', 'ab',encoding="Utf-8")
-	record=[texts.text for texts in soup.findAll("td",{"align":"center"})]
-	print record
-	for x in soup.findAll("td"):
-		if x.parent.name=="tr":
-			lol=x.text
-	for x in record:
-		if "P" in x: record.remove("P")
-		elif "F" in x: record.remove("F")
-		elif "A" in x: record.remove("A")
-	del record[0:4]
-	print record
-	fl.write(usn)
-	for x in record:
-		fl.write(x)
-		fl.write(",")
-	fl.write(lol)
-	fl.close()
+	x=0
+	while x<len(usnl):
+		page_html=open(usnl[x]+".html", 'wb')
+		soup=BeautifulSoup(page_html)
+		soup.prettify()
+		fl = codecs.open('results/output.csv', 'ab',encoding="Utf-8")
+		record=[texts.text for texts in soup.findAll("td",{"align":"center"})]
+		for y in soup.findAll("td"):
+			if y.parent.name=="tr":
+				lol=y.text
+		for y in record:
+			if "P" in y: record.remove("P")
+			elif "F" in y: record.remove("F")
+			elif "A" in y: record.remove("A")
+		del record[0:4]
+		print record
+		fl.write(usnl[x])
+		for y in record:
+			fl.write(y)
+			fl.write(",")
+		fl.write(lol)
+		fl.close()
+		x+=1
 	
 def parsehtml():
 	records=[]
