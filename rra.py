@@ -39,10 +39,10 @@ def getval():
 	record=[]
 	x=0
 	while x<len(usnl):
-		page_html=open(usnl[x]+".html", 'wb')
+		page_html=open("results/"usnl[x]+".html", 'wb')
 		soup=BeautifulSoup(page_html)
 		soup.prettify()
-		fl = codecs.open('results/output.csv', 'ab',encoding="Utf-8")
+		fl = codecs.open('output.csv', 'ab',encoding="Utf-8")
 		record=[texts.text for texts in soup.findAll("td",{"align":"center"})]
 		for y in soup.findAll("td"):
 			if y.parent.name=="tr":
