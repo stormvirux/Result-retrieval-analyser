@@ -42,6 +42,7 @@ def getval():
 	soup.prettify()
 	fl = codecs.open('output.csv', 'ab',encoding="Utf-8")
 	record=[texts.text for texts in soup.findAll("td",{"align":"center"})]
+	print record
 	for x in soup.findAll("td"):
 		if x.parent.name=="tr":
 			lol=x.text
@@ -60,14 +61,17 @@ def getval():
 	
 def parsehtml():
 	records=[]
-	page_html=open('1.html')
-	soup=BeautifulSoup(page_html)
-	all_tds = [td for td in soup.findAll("td", width="513")]
-	fl = open('output.html', 'wb')
-	lol=all_tds[0]
-	record = '%s' % (lol)
-	fl.write(record)
-	fl.close()
+	files=glob.glob("results/*.*")
+	for f in files:
+		page_html=open(f)
+		soup=BeautifulSoup(page_html)
+		all_tds = [td for td in soup.findAll("td", width="513")]
+		fl = open(usnl[x]+".html", 'wb')
+		lol=all_tds[0]
+		record = '%s' % (lol)
+		fl.write(record)
+		fl.close()
+		x=x+1
 		
 def ret():
 	import requests
@@ -77,8 +81,13 @@ def ret():
 	for branch in branches:
 		for rno in range(1,120):
 			usn="4pa"+year+branch+"%3d"%rno
-	payload={'rid':usn,'submit':'submit'}
-	r=requests.post("http://results.vtu.ac.in/vitavi.php/post",data=payload)
+			payload={'rid':usn,'submit':'submit'}
+			r=requests.post("http://results.vtu.ac.in/vitavi.php/post",data=payload)
+			fl=open("results/"+usn+".html","wb")
+			fl.write(r.text)
+			fl.close()
+			usnl.add(usn)
+			
 
 def main():
 	ret()
@@ -88,6 +97,8 @@ def main():
 
 if __name__ == '__main__':
 	usn=""
+	usnl=[]
+	x=0
 	from bs4 import BeautifulSoup
 	import re
 	inputIndex()
