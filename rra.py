@@ -77,6 +77,7 @@ def parsehtml():
 		
 def ret():
 	import requests
+	x=0
 	branches=["cs","ec","me","is","bt","te"]
 	print "enter the year:"
 	year=raw_input()
@@ -92,6 +93,7 @@ def ret():
 			
 
 def main():
+	inputIndex()
 	ret()
 	parsehtml()
 	getval()
@@ -100,7 +102,6 @@ def main():
 if __name__ == '__main__':
 	usn=""
 	usnl=[]
-	x=0
 	from bs4 import BeautifulSoup
 	import re
 	inputIndex()
