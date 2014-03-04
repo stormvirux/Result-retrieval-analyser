@@ -104,6 +104,8 @@ if __name__ == '__main__':
 	usnl=[]
 	from bs4 import BeautifulSoup
 	import re
+	import glob
+	import os
 	inputIndex()
 	main()
 
