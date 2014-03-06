@@ -39,7 +39,7 @@ def getval():
 	record=[]
 	x=0
 	while x<len(usnl):
-		page_html=open("results/"usnl[x]+".html", 'wb')
+		page_html=open("results/"+usnl[x]+".html", 'rb')
 		soup=BeautifulSoup(page_html)
 		soup.prettify()
 		fl = codecs.open('output.csv', 'ab',encoding="Utf-8")
@@ -52,44 +52,46 @@ def getval():
 			elif "F" in y: record.remove("F")
 			elif "A" in y: record.remove("A")
 		del record[0:4]
-		print record
-		fl.write(usnl[x])
-		for y in record:
-			fl.write(y)
-			fl.write(",")
-		fl.write(lol)
-		fl.close()
+		fl.write("\n"+usnl[x]+",")
+		if record:
+			for y in record:
+				fl.write(y)
+				fl.write(",")	
+			fl.write(lol)
+			fl.close()
 		x+=1
 	
 def parsehtml():
 	records=[]
 	files=glob.glob("results/*.*")
+	x=0
 	for f in files:
 		page_html=open(f)
 		soup=BeautifulSoup(page_html)
 		all_tds = [td for td in soup.findAll("td", width="513")]
-		fl = open(usnl[x]+".html", 'wb')
+		fl = open("results/"+usnl[x]+".html", 'wb')
 		lol=all_tds[0]
 		record = '%s' % (lol)
-		fl.write(record)
+		if record:
+			fl.write(record)
 		fl.close()
 		x=x+1
 		
 def ret():
 	import requests
 	x=0
-	branches=["cs","ec","me","is","bt","te"]
+	branches=["cs"]
 	print "enter the year:"
 	year=raw_input()
 	for branch in branches:
-		for rno in range(1,120):
-			usn="4pa"+year+branch+"%3d"%rno
+		for rno in range(1,11):
+			usn="4pa"+year+branch+"%03d"%rno
 			payload={'rid':usn,'submit':'submit'}
 			r=requests.post("http://results.vtu.ac.in/vitavi.php/post",data=payload)
 			fl=open("results/"+usn+".html","wb")
 			fl.write(r.text)
 			fl.close()
-			usnl.add(usn)
+			usnl.append(usn)
 			
 
 def main():
