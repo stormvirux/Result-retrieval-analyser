@@ -46,18 +46,20 @@ def getval():
 		record=[texts.text for texts in soup.findAll("td",{"align":"center"})]
 		for y in soup.findAll("td"):
 			if y.parent.name=="tr":
-				lol=y.text
+				lol.append(y.text)
 		for y in record:
 			if "P" in y: record.remove("P")
 			elif "F" in y: record.remove("F")
 			elif "A" in y: record.remove("A")
 		del record[0:4]
+		if len(record)>24:
+			del record[24:]
 		fl.write("\n"+usnl[x]+",")
 		if record:
 			for y in record:
 				fl.write(y)
 				fl.write(",")	
-			fl.write(lol)
+			fl.write(lol[-10])
 			fl.close()
 		x+=1
 	
@@ -86,7 +88,7 @@ def ret():
 	print "enter the year:"
 	year=raw_input()
 	for branch in branches:
-		for rno in range(1,11):
+		for rno in range(1,2):
 			usn="4pa"+year+branch+"%03d"%rno
 			payload={'rid':usn,'submit':'submit'}
 			r=requests.post("http://results.vtu.ac.in/vitavi.php/post",data=payload)
