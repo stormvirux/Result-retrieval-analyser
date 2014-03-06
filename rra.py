@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  untitled.py
+#  rra.py
 #  
 #  Copyright 2014 Thaha Muhammed <storm@storm-lappy>
 #  
@@ -47,6 +47,8 @@ def getval():
 		for y in soup.findAll("td"):
 			if y.parent.name=="tr":
 				lol.append(y.text)
+		if lol[-10] == "A" or lol[-10]=="P" or lol[-10]=="F":
+			lol[-10],lol[-1]=lol[-1],lol[-10]
 		for y in record:
 			if "P" in y: record.remove("P")
 			elif "F" in y: record.remove("F")
@@ -84,11 +86,11 @@ def parsehtml():
 def ret():
 	import requests
 	x=0
-	branches=["cs"]
+	branches=["cs,is,ec,te,bt,me"]
 	print "enter the year:"
 	year=raw_input()
 	for branch in branches:
-		for rno in range(1,2):
+		for rno in range(1,120):
 			usn="4pa"+year+branch+"%03d"%rno
 			payload={'rid':usn,'submit':'submit'}
 			r=requests.post("http://results.vtu.ac.in/vitavi.php/post",data=payload)
