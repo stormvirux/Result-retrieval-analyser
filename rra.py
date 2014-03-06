@@ -100,7 +100,7 @@ def main():
 	inputIndex()
 	ret()
 	parsehtml()
-	#getval()
+	getval()
 	return 0
 
 if __name__ == '__main__':
