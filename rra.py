@@ -64,7 +64,9 @@ def getval():
 def parsehtml():
 	records=[]
 	files=glob.glob("results/*.*")
+	print files.sort()
 	x=0
+	print files
 	for f in files:
 		page_html=open(f)
 		soup=BeautifulSoup(page_html)
@@ -98,7 +100,7 @@ def main():
 	inputIndex()
 	ret()
 	parsehtml()
-	getval()
+	#getval()
 	return 0
 
 if __name__ == '__main__':
