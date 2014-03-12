@@ -86,16 +86,16 @@ def parsehtml():
 def ret():
 	import requests
 	x=0
-	branches=sys.argv[1]
-	for branch in branches:
-		for rno in range(1,20):
-			usn="4pa"+year+branch+"%03d"%rno
-			payload={'rid':usn,'submit':'submit'}
-			r=requests.post("http://results.vtu.ac.in/vitavi.php/post",data=payload)
-			fl=open("results/"+usn+".html","wb")
-			fl.write(r.text)
-			fl.close()
-			usnl.append(usn)
+	year=sys.argv[1]
+	branches=sys.argv[2]
+	for rno in range(1,20):
+		usn="4pa"+year+branches+"%03d"%rno
+		payload={'rid':usn,'submit':'submit'}
+		r=requests.post("http://results.vtu.ac.in/vitavi.php/post",data=payload)
+		fl=open("results/"+usn+".html","wb")
+		fl.write(r.text)
+		fl.close()
+		usnl.append(usn)
 			
 
 def main():
