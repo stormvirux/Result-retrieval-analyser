@@ -86,11 +86,9 @@ def parsehtml():
 def ret():
 	import requests
 	x=0
-	branches=["cs,is,ec,te,bt,me"]
-	print "enter the year:"
-	year=raw_input()
+	branches=sys.argv[1]
 	for branch in branches:
-		for rno in range(1,120):
+		for rno in range(1,20):
 			usn="4pa"+year+branch+"%03d"%rno
 			payload={'rid':usn,'submit':'submit'}
 			r=requests.post("http://results.vtu.ac.in/vitavi.php/post",data=payload)
@@ -110,10 +108,11 @@ def main():
 if __name__ == '__main__':
 	usn=""
 	usnl=[]
-	from bs4 import BeautifulSoup
+	import bs4 
 	import re
 	import glob
 	import os
+	import sys
 	inputIndex()
 	main()
 
