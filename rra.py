@@ -44,24 +44,24 @@ def getval():
 		soup.prettify()
 		fl = codecs.open('output.csv', 'ab',encoding="Utf-8")
 		record=[texts.text for texts in soup.findAll("td",{"align":"center"})]
-		for y in soup.findAll("td"):
+		"""for y in soup.findAll("td"):
 			if y.parent.name=="tr":
 				lol.append(y.text)
 		if lol[-10] == "A" or lol[-10]=="P" or lol[-10]=="F":
-			lol[-10],lol[-1]=lol[-1],lol[-10]
+			lol[-10],lol[-1]=lol[-1],lol[-10]"""
 		for y in record:
 			if "P" in y: record.remove("P")
 			elif "F" in y: record.remove("F")
 			elif "A" in y: record.remove("A")
 		del record[0:4]
 		if len(record)>24:
-			del record[24:]
-		fl.write("\n"+usnl[x]+",")
+			del record[24:]	
 		if record:
+			fl.write("\n"+usnl[x]+",")
 			for y in record:
 				fl.write(y)
 				fl.write(",")	
-			fl.write(lol[-10])
+				#fl.write(lol[-10])
 			fl.close()
 		x+=1
 	
@@ -108,7 +108,7 @@ def main():
 if __name__ == '__main__':
 	usn=""
 	usnl=[]
-	import bs4 
+	from bs4 import BeautifulSoup 
 	import re
 	import glob
 	import os
