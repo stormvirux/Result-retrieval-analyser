@@ -24,7 +24,7 @@
 def inputIndex():
 	import codecs
 	x=0
-	fl = codecs.open('output.csv', 'wb',encoding="Utf-8")
+	fl = codecs.open('output'+sys.argv[1]+sys.argv[2]+'.csv', 'wb',encoding="Utf-8")
 	fl.write("usn,")
 	while x<8:
 		fl.write("External,Internal,Total,")
@@ -42,7 +42,7 @@ def getval():
 		page_html=open("results/"+usnl[x]+".html", 'rb')
 		soup=BeautifulSoup(page_html)
 		soup.prettify()
-		fl = codecs.open('output.csv', 'ab',encoding="Utf-8")
+		fl = codecs.open('output'+sys.argv[1]+sys.argv[2]+'.csv', 'ab',encoding="Utf-8")
 		record=[texts.text for texts in soup.findAll("td",{"align":"center"})]
 		"""for y in soup.findAll("td"):
 			if y.parent.name=="tr":
@@ -116,3 +116,4 @@ if __name__ == '__main__':
 	inputIndex()
 	main()
 
+#TODO:Names of those whose result has not come out
