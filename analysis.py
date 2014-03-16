@@ -1,27 +1,38 @@
 import pandas as pd
-import numpy
+import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
 import statsmodels.api as sm
+from numpy.random import randn
+import matplotlib as mpl
+import seaborn as sns
 
 #pd.set_option('max_columns', 50)
 data=pd.read_csv("output11cs.csv")
 #df2 = data.groupby(['Total','Total.1','Total.2','Total.3','Total.4','Total.5','Total.6','Total.7'])['Main Total'].sum().reset_index()
 #df2.sum(axis=1)
 df3=data[['Total','Total.1','Total.2','Total.3','Total.4','Total.5','Total.6','Total.7']]
-print df3
 data["Main Total"]=df3.sum(axis=1)
 data = data.dropna()
 data.reset_index(drop=True)
 x=data["Main Total"]
-print data["Main Total"]
-k_test=stats.kstest(x,"norm")
+y = stats.uniform.rvs(size = 100)
+print stats.kstest(x,'norm')
+print stats.normaltest(x)
 print sm.stats.lillifors(x)
-print k_test
 #print df2
-#print df2.mean()
-"""plt.hist(data["Main Total"])
-plt.title("Gaussian Histogram")
+print df3.mean()
+#plt.hist(x, 70, histtype="stepfilled", alpha=.7);
+#max_data = np.r_[data["Main Total"]].max()
+#bins = np.linspace(0, max_data, max_data + 1)
+plt.hist(data["Main Total"],histtype="stepfilled", alpha=.7)
+plt.title("Total marks Histogram")
 plt.xlabel("Value")
 plt.ylabel("Frequency")
+plt.show()
+"""freq=data["Main Total"].value_counts()
+dick=dict(freq)
+t_data = pd.DataFrame([[key,dick[key]] for key in dick], columns=['lol','rofl'])
+plt.axis([200, 800, 0, 2])
+plt.plot(t_data["lol"],t_data["rofl"],'bs' )
 plt.show()"""
