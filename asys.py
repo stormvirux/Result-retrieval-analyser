@@ -37,11 +37,13 @@ def Compavg():
 	plt.show()
 	
 def compSub():
-	plt.hist(data["Total.1"],20,normed=True, color="#6495ED", alpha=.7)
-	plt.hist(data['Total.2'],20, normed=True, color="#F08080", alpha=.7)
-	plt.hist(data['Total.3'],20, normed=True, color="#8C1515", alpha=.7)
-	plt.hist(data['Total.4'],20, normed=True, color="#D2C295", alpha=.7)
-	plt.hist(data['Total.5'],20, normed=True, color="#4168B7", alpha=.7)
+	#max_data = np.r_[data["Total"]].max()
+	#bins = np.linspace(0, max_data, max_data + 1)
+	plt.hist(data["Total"],linewidth=0, alpha=.7)
+	plt.hist(data['Total.1'],linewidth=0,alpha=.7)
+	plt.hist(data['Total.2'],linewidth=0,alpha=.7)
+	plt.hist(data['Total.3'],linewidth=0,alpha=.7)
+	plt.hist(data['Total.4'],linewidth=0,alpha=.7)
 	plt.title("Total marks Histogram")
 	plt.xlabel("Value")
 	plt.ylabel("Frequency")
