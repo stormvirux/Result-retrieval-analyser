@@ -33,7 +33,6 @@ def inputIndex():
 	fl.close()
 
 def getval():
-	from bs4 import BeautifulSoup
 	import codecs
 	lol=[]
 	record=[]
@@ -112,10 +111,13 @@ if __name__ == '__main__':
 	usnl=[]
 	from bs4 import BeautifulSoup 
 	import re
+    import asys
 	import glob
 	import os
 	import sys
 	inputIndex()
 	main()
+	asys.Compavg()
+    asys.compSub()
 
 #TODO:Names of those whose result has not come out
