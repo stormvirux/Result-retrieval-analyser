@@ -1,5 +1,40 @@
 import wx
+#######################################################################
+class PageOne(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        t = wx.StaticText(self, -1, "This is a PageOne object", (20,20))
+#######################################################################
+class PageTwo(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        t = wx.StaticText(self, -1, "This is a PageTwo object", (40,40))
+#######################################################################
+class Notebook(wx.Notebook):
+    def __init__(self,parent):
+        wx.Notebook.__init__(self, parent,size=(600, 500))
+        self.parent = parent
+        #menubar = wx.MenuBar()
+        #file = wx.Menu()
+        #file.Append(101, 'Quit', '' )
+        #menubar.Append(file, "&File")
+        #self.SetMenuBar(menubar)
+        #wx.EVT_MENU(self, 101, self.OnQuit)
+        nb = wx.Notebook(self, -1, style=wx.NB_BOTTOM)
+        sheet1 =PageOne(self)
+        sheet2 = PageTwo(self)
+        #self.sheet3 = MySheet(nb)
+        self.AddPage(sheet1, "Sheet1")
+        self.AddPage(sheet2, "Sheet2")
+        #nb.AddPage(self.sheet3, "Sheet3")
+        sheet1.SetFocus()
+        self.parent.StatusBar()
 
+    def StatusBar(self):
+        self.statusbar = self.CreateStatusBar()
+
+    def OnQuit(self, event):
+        self.Close()
 #######################################################################
 
 class MyPanel(wx.Panel):
@@ -80,6 +115,7 @@ class MyFrame(wx.Frame):
         self.SetTitle('Result & Analyze')
         self.sizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(self.sizer)
+        self.nb=None
         menubar = wx.MenuBar()
 
         fileMenu = wx.Menu()
@@ -130,7 +166,7 @@ class MyFrame(wx.Frame):
                 self.panel.Destroy()
 
             # create new panel
-            self.panel = MyPanel(self, self.state)
+            self.nb = Notebook(self)
 
             # add to sizer
             self.sizer.Add(self.panel, 1, wx.EXPAND)
