@@ -11,27 +11,37 @@ class PageTwo(wx.Panel):
         t = wx.StaticText(self, -1, "This is a PageTwo object", (40,40))
 #######################################################################
 class Notebook(wx.Notebook):
-    def __init__(self,parent):
-        wx.Notebook.__init__(self, parent,size=(600, 500))
+    def __init__(self,parent,name):
+        wx.Notebook.__init__(self, parent,size=(800, 500))
+        self.name=name
+        print self.name
         self.parent = parent
+        parent.size=(800,480)
         #menubar = wx.MenuBar()
         #file = wx.Menu()
         #file.Append(101, 'Quit', '' )
         #menubar.Append(file, "&File")
         #self.SetMenuBar(menubar)
         #wx.EVT_MENU(self, 101, self.OnQuit)
-        nb = wx.Notebook(self, -1, style=wx.NB_BOTTOM)
+        #nb = wx.Notebook(self, -1, style=wx.NB_BOTTOM)
         sheet1 =PageOne(self)
         sheet2 = PageTwo(self)
         #self.sheet3 = MySheet(nb)
-        self.AddPage(sheet1, "Sheet1")
-        self.AddPage(sheet2, "Sheet2")
+        self.AddPage(sheet1, "Marks")
+        self.AddPage(sheet2, "Analisys")
         #nb.AddPage(self.sheet3, "Sheet3")
-        sheet1.SetFocus()
-        self.parent.StatusBar()
+        print self.GetPageCount()
+        print self.GetSelection()
+        if self.name=="gm":
+            self.SetSelection(0)
+            sheet1.SetFocus()
+        else:
+            self.SetSelection(1)
+            sheet2.SetFocus()
+#        self.parent.StatusBar()
 
-    def StatusBar(self):
-        self.statusbar = self.CreateStatusBar()
+#    def StatusBar(self):
+#       self.statusbar = self.CreateStatusBar()
 
     def OnQuit(self, event):
         self.Close()
@@ -58,6 +68,8 @@ class MyPanel(wx.Panel):
 
         self.cbtn1 = wx.Button(self, label='GET MARKS',size=(120,50))
         self.cbtn2=wx.Button(self, label='ANALYZE MARKS',size=(120,50))
+        self.cbtn1.myname="gm"
+        self.cbtn2.myname="am"
         #self.buttonOne=wx.Image("image1.bmp", wx.BITMAP_TYPE_BMP).ConvertToBitmap()
         #self.buttonImage = wx.Image(button_image, wx.BITMAP_TYPE_PNG).ConvertToBitmap()
         #self.button = wx.BitmapButton(self, -1, self.buttonImage, pos=(100,50))
@@ -86,7 +98,7 @@ class MyPanel(wx.Panel):
 
     def buttonClick(self, evt):
         print "(debug) MyPanel.buttonClick"
-        self.parent.ChangePanel()
+        self.parent.ChangePanel(evt.GetEventObject().myname)
 
 """   def OnEraseBackground(self, evt):
         dc = evt.GetDC()
@@ -102,12 +114,12 @@ class MyPanel(wx.Panel):
 
 class MyFrame(wx.Frame):
 
-    def __init__(self, size=(800,480)):
+    def __init__(self, size=(500,500)):
         wx.Frame.__init__(self, None, size=size)
-        
+        name=None
         self.InitUI()
         self.Show() # Show is used to show/hide window not to update content
-        self.ChangePanel()
+        self.ChangePanel(name)
         
     def InitUI(self):
         self.state = None
@@ -140,10 +152,10 @@ class MyFrame(wx.Frame):
         self.Close()
     #--------------------------
 
-    def ChangePanel(self):
+    def ChangePanel(self,name):
 
         print "(debug) MyFrame.ChangePanel: state:", self.state
-
+        
         if self.state is None or self.state == 1:
             # change state
             self.state = 0 
@@ -166,10 +178,10 @@ class MyFrame(wx.Frame):
                 self.panel.Destroy()
 
             # create new panel
-            self.nb = Notebook(self)
+            self.nb = Notebook(self,name)
 
             # add to sizer
-            self.sizer.Add(self.panel, 1, wx.EXPAND)
+           # self.sizer.Add(self.panel, 1, wx.EXPAND)
         else:
             print "unkown state:", self.state
 
@@ -181,7 +193,7 @@ class Application(wx.App):
 
     def __init__(self, redirect=False, filename=None):
         wx.App.__init__(self, redirect, filename)   
-        self.frame = MyFrame((800, 480))
+        self.frame = MyFrame((500, 500))
 
     def run(self):
         self.MainLoop()
