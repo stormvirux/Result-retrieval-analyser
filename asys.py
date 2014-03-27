@@ -54,4 +54,5 @@ df3=data[['Total','Total.1','Total.2','Total.3','Total.4','Total.5','Total.6','T
 data["Main Total"]=df3.sum(axis=1)
 data = data.dropna()
 data.reset_index(drop=True)
-
+compSub()
+Compavg()
